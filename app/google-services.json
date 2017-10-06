@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "606871982667",
+    "firebase_url": "https://geello-app.firebaseio.com",
+    "project_id": "geello-app",
+    "storage_bucket": "geello-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606871982667:android:79d8918e4d467c18",
+        "android_client_info": {
+          "package_name": "com.therisingtechie.geello"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606871982667-24ajltbvabpfq1d6hcm9t1hk68tmoesk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.therisingtechie.geello",
+            "certificate_hash": "efb542a09ddcba01d6ec8e11cf0a4683b55317c7"
+          }
+        },
+        {
+          "client_id": "606871982667-mdeie1h50l0m99a6496nbic4gcctgd8i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA62iUDbFpCFtwNmtjxGO0RLi8uF0Bq7XQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "606871982667-mdeie1h50l0m99a6496nbic4gcctgd8i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

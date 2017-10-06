@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Geello</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_dash_board">Dashboard</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+
+
+    <!--Facebook related strings-->
+    <string name="facebook_app_id">135871100385816</string>
+    <string name="fb_login_protocol_scheme">fb135871100385816</string>
+
+    <!--Login Activity strings-->
+    <string name="str_logintext">LOG IN WITH GEELLO  ACCOUNT</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="str_forgot_password">FORGOT PASSWORD</string>
+    <string name="str_btn_register">REGISTER</string>
+
+    Simple Registration Activity
+    <string name="edt_lastname_placeholder">LAST NAME</string>
+    <string name="edt_firstname_placeholder">FIRST NAME</string>
+    <string name="edt_email_placeholder">EMAIL</string>
+    <string name="edt_mobile_placeholder">MOBILE</string>
+    <string name="edt_password_placeholder">PASSWORD</string>
+    <string name="tv_registration_terms">By Clicking "REGISTER",I confirm that i have read and agreed to the <b>Terms &amp; Conditions</b> and <b>Privacy Policy</b> </string>
+    <string name="btn_register">REGISTER</string>
+    <string name="title_activity_social_registration">Geello App Registration</string>
+    <string name="str_already_registered">Already Registered?</string>
+    <string name="str_not_already">Not a member yet? Signup now</string>
+
+    <string name="str_btn_see_menu">See Menu</string>
+    <string name="str_btn_signup_with_gello">Sign up with Gello</string>
+    <string name="str_btn_signup_with_facebook">Sign up with Facebook</string>
+    <string name="str_btn_signup_with_gmail">Sign up with Gmail</string>
+    <string name="title_activity_search_restaurants">Search Restaurants</string>
+
+    <string name="api_error">System Error. Please try again later!</string>
+    <string name="server_error">System Error. Please try again later!</string>
+    <string name="str_error_servercode_not_200">Something is wrong,try again</string>
+
+
+</resources>
