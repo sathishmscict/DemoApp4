@@ -58,6 +58,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.therisingtechie.geello.Verification.VerificationActivity;
 import com.therisingtechie.geello.api.ApiClient;
 import com.therisingtechie.geello.api.ApiInterface;
 import com.therisingtechie.geello.helper.CommonMethods;
@@ -684,7 +685,7 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
                 {
 
                     //Replace as Verification screen
-                    Intent intent = new Intent(context , DashBoardActivity.class);
+                    Intent intent = new Intent(context , VerificationActivity.class);
                     startActivity(intent);
                     finish();
                 }

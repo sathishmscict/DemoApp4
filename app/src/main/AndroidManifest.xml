@@ -76,6 +76,13 @@
             android:label="@string/title_activity_search_restaurants"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
+
+        <activity
+            android:name=".Verification.VerificationActivity"
+            android:label="@string/title_activity_search_restaurants"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

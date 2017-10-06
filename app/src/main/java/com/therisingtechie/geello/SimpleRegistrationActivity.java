@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.therisingtechie.geello.Verification.VerificationActivity;
 import com.therisingtechie.geello.api.ApiClient;
 import com.therisingtechie.geello.api.ApiInterface;
 import com.therisingtechie.geello.helper.CommonMethods;
@@ -245,6 +246,13 @@ public class SimpleRegistrationActivity extends AppCompatActivity {
                         String firstname = userData.getFirstName();
 
                         sessionManager.setUserDetails(userData.getFirstName() , userData.getLastName(),userData.getEmail() , userData.getMobile(),userData.getImage(),userData.getIsActive(),userData.getSmsCode(),userData.getToken(),userData.getId(),userData.getIsNewUser());
+
+
+                        CommonMethods.hideDialog(spotsDialog);
+                        Intent intent = new Intent(context, VerificationActivity.class);
+                        startActivity(intent);
+                        finish();
+
 
 
                     }

@@ -40,4 +40,13 @@
     <string name="str_error_servercode_not_200">Something is wrong,try again</string>
 
 
+    <!--Verification Activity-->
+    <string name="str_verification_descr1">We have sent you an access code</string>
+    <string name="str_verification_descr2">via SMS for Mobile number : </string>
+    <string name="title_activity_verification">Verification</string>
+    <string name="str_resendcode">Resend Code</string>
+    <string name="str_enter_code_here">enter code here</string>
+
+
+
 </resources>

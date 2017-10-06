@@ -178,10 +178,10 @@ public class SessionManager {
     }
 
 
-    public void createUserSendSmsUrl(String code, String websiteurl) {
+    public void createUserSendSmsUrl(String code) {
 
         editor.putString(KEY_CODE, code);
-        editor.putString(KEY_SMSURL, websiteurl);// http://radiant.dnsitexperts.com/JSON_Data.aspx?type=otp&mobile=9825681802&code=7692
+        //editor.putString(KEY_SMSURL, websiteurl);// http://radiant.dnsitexperts.com/JSON_Data.aspx?type=otp&mobile=9825681802&code=7692
         editor.commit();
 
     }

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.therisingtechie.geello.Verification.VerificationActivity;
 import com.therisingtechie.geello.api.ApiClient;
 import com.therisingtechie.geello.api.ApiInterface;
 import com.therisingtechie.geello.helper.CommonMethods;
@@ -153,7 +154,7 @@ public class GelloLoginActivity extends AppCompatActivity {
                         sessionManager.setUserDetails(userData.getFirstName(), userData.getLastName(), userData.getEmail(), userData.getMobile(), userData.getImage(), userData.getIsActive(), userData.getSmsCode(), userData.getToken(), userData.getId(), userData.getIsNewUser());
                         CommonMethods.hideDialog(spotsDialog);
                         if (userData.getMobile().length() == 10) {
-                            Intent intent = new Intent(context, DashBoardActivity.class);
+                            Intent intent = new Intent(context, VerificationActivity.class);
                             startActivity(intent);
                             finish();
 

@@ -1,5 +1,6 @@
 package com.therisingtechie.geello.api;
 
+import com.therisingtechie.geello.model.CommonReponse;
 import com.therisingtechie.geello.model.UserDataResponse;
 import com.therisingtechie.geello.request.LoginRequest;
 import com.therisingtechie.geello.request.UserSimpleRegistration;
@@ -27,6 +28,12 @@ public interface ApiInterface {
 
     @POST("api/login")
     Call<UserDataResponse> sendLoginDetails(@Body LoginRequest log_out);
+
+
+    @POST("VerificationService")
+    @FormUrlEncoded
+    Call<CommonReponse> getVerificatonCode(@Field("type") String type, @Field("code") String verificationCode, @Field("mobile") String mobile);
+
 
 
 
