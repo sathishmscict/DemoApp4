@@ -1,7 +1,9 @@
 package com.therisingtechie.geello.api;
 
+import com.therisingtechie.geello.helper.FCMRequest;
 import com.therisingtechie.geello.model.CommonReponse;
 import com.therisingtechie.geello.model.CategoryDataResponse;
+import com.therisingtechie.geello.model.FCMResponse;
 import com.therisingtechie.geello.model.RestaurantsDataResponse;
 import com.therisingtechie.geello.model.UserDataResponse;
 import com.therisingtechie.geello.request.LoginRequest;
@@ -40,15 +42,18 @@ public interface ApiInterface {
 
 
     @POST("api/categories/get")
-    Call<CategoryDataResponse> getAllCategoriesFromServer(@Header("token") String authorization, @Body RestaurantDataRequest log_out);
+    Call<CategoryDataResponse> getAllCategoriesFromServer(@Header("token") String authorization, @Body RestaurantDataRequest requestCategory);
 
     @POST("api/restros/getRestros")
-    Call<RestaurantsDataResponse> getAllRestaurantDetailsFromServer(@Header("token") String authorization, @Body RestaurantDataRequest log_out);
+    Call<RestaurantsDataResponse> getAllRestaurantDetailsFromServer(@Header("token") String authorization, @Body RestaurantDataRequest requestRestaurants);
 
     @POST("api/restros/getPopularRestros")
-    Call<RestaurantsDataResponse> getPopularRestaurantDetailsFromServer(@Header("token") String authorization, @Body RestaurantDataRequest log_out);
+    Call<RestaurantsDataResponse> getPopularRestaurantDetailsFromServer(@Header("token") String authorization, @Body RestaurantDataRequest requestRestaurants);
 
 
+    @POST("api/registerPushNotification")
+    @FormUrlEncoded
+    Call<FCMResponse> sendFCMTokenToServer(@Header("token") String authorization, @Body FCMRequest requesFCM);
 
 
     //@Header("Accept-Language") String lang

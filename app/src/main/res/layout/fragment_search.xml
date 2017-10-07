@@ -48,7 +48,7 @@
         android:drawablePadding="10dp"
         android:singleLine="true"
         android:drawableLeft="@drawable/icon_search"
-        android:hint="  Search for a restaurant or dish"
+        android:hint="  Search for a restaurants or dish"
 
         android:inputType="textCapSentences"
         android:layout_margin="8dp"

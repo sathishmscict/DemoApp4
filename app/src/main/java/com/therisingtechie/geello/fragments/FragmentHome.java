@@ -155,6 +155,8 @@ public class FragmentHome extends android.support.v4.app.Fragment {
     private void getAllRestaurantDetailsFromServer() {
 
 
+        CommonMethods.showDialog(spotsDialog);
+
         ApiInterface apicInterface = ApiClient.getClient().create(ApiInterface.class);
 
         RestaurantDataRequest restaurantDataRequest = new RestaurantDataRequest();
@@ -219,6 +221,7 @@ public class FragmentHome extends android.support.v4.app.Fragment {
 
     private void getPopularRestarantsDetailsFromServer() {
 
+        CommonMethods.showDialog(spotsDialog);
         ApiInterface apicInterface = ApiClient.getClient().create(ApiInterface.class);
 
         RestaurantDataRequest restaurantDataRequest = new RestaurantDataRequest();

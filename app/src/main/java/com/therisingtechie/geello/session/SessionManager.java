@@ -199,6 +199,13 @@ public class SessionManager {
         editor.commit();
     }
 
+
+    public void setUserToken(String userToken)
+    {
+        editor.putString(KEY_TOKEN , userToken);
+        editor.commit();
+
+    }
     public void setUserDetails(String firstName, String lastName, String email, String mobile, String image, boolean isActive, String smsCode, String token, String id, boolean isNewUser) {
 
 

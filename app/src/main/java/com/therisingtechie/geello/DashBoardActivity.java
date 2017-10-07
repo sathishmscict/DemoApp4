@@ -6,12 +6,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -35,20 +38,31 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.therisingtechie.geello.api.ApiClient;
+import com.therisingtechie.geello.api.ApiInterface;
 import com.therisingtechie.geello.fragments.FragmentHome;
 import com.therisingtechie.geello.fragments.FragmentOrders;
 import com.therisingtechie.geello.fragments.FragmentProfile;
 import com.therisingtechie.geello.fragments.FragmentSearch;
+import com.therisingtechie.geello.helper.CommonMethods;
+import com.therisingtechie.geello.helper.FCMRequest;
 import com.therisingtechie.geello.helper.GPSTracker;
 import com.therisingtechie.geello.helper.NetConnectivity;
+import com.therisingtechie.geello.model.CommonReponse;
+import com.therisingtechie.geello.model.FCMResponse;
 import com.therisingtechie.geello.session.SessionManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dmax.dialog.SpotsDialog;
 import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -70,6 +84,7 @@ public class DashBoardActivity extends AppCompatActivity {
     private TextView tvTitle;
     private Geocoder geocoder;
     private String TAG  = DashBoardActivity.class.getSimpleName();
+    private SpotsDialog spotsDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +104,11 @@ public class DashBoardActivity extends AppCompatActivity {
         userDetails = sessionManager.getSessionDetails();
 
 
+        spotsDialog = new SpotsDialog(context);
+        spotsDialog.setCancelable(false);
+
+        sessionManager = new SessionManager(context);
+        userDetails = sessionManager.getSessionDetails();
 
 
 
@@ -168,6 +188,19 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
 
+       setupCurrentLocation();
+
+
+
+
+
+        Fragment fragment = new FragmentHome();
+        setupFragment(fragment,getString(R.string.app_name));
+
+
+    }
+
+    private void setupCurrentLocation() {
         Dexter.withActivity(DashBoardActivity.this)
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
@@ -189,7 +222,7 @@ public class DashBoardActivity extends AppCompatActivity {
                             {
 
                                 // create class object
-                                 gps = new GPSTracker(context);
+                                gps = new GPSTracker(context);
 
                                 Location myLocation = gps.getLocation();
 
@@ -247,18 +280,111 @@ public class DashBoardActivity extends AppCompatActivity {
                     @Override
                     public void onPermissionRationaleShouldBeShown(PermissionRequest
                                                                            permission, PermissionToken token) {
-                        /* ... */}
+                        /* ... */
+
+                        token.continuePermissionRequest();
+
+                    }
+
+
+
                 }).check();
+    }
+
+
+    private void UpdateFcmTokenDetailsToServer()
+    {
+
+        CommonMethods.showDialog(spotsDialog);
+
+        ApiInterface apicInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        String version = "";
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+             version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        String fcm_tokenid = "";
+        try {
+            MyFirebaseInstanceIDService mid = new MyFirebaseInstanceIDService();
+            fcm_tokenid = String.valueOf(mid.onTokenRefreshNew(context));
+
+        } catch (Exception e) {
+            fcm_tokenid = "";
+            e.printStackTrace();
+        }
 
 
 
 
-        Fragment fragment = new FragmentHome();
-        setupFragment(fragment,getString(R.string.app_name));
+        FCMRequest fcmRequest = new FCMRequest();
+
+        fcmRequest.app_version = version;
+        fcmRequest.device_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        fcmRequest.device_token = fcm_tokenid;
+        fcmRequest.device_type = 1;
+
+
+
+        // loginRequest.login_type  = CommonMethods.LOGIN_TYPE_DIRECT;
+
+        Log.d(TAG, "URL api/registerPushNotification: " + CommonMethods.WEBSITE + "api/registerPushNotification?body="+fcmRequest.toString());
+
+        apicInterface.sendFCMTokenToServer(userDetails.get(SessionManager.KEY_TOKEN),fcmRequest).enqueue(new Callback<FCMResponse>() {
+
+
+            @Override
+            public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+
+                Log.d(TAG, "getLoginDetails Response Code : " + response.code());
+
+                if (response.code() == 200) {
+
+                    String str_error = response.body().getMessage();
+                    boolean error_status = response.body().getFlag();
+
+                    Log.d(TAG , "Errror : "+ str_error+" Stataus : "+error_status);
+
+
+                    if (error_status == true) {
+
+
+                        FCMResponse.Data userData = response.body().getData();
+
+                        String userid = userData.getId();
+                        String token = userData.getDeviceToken();
+
+
+                        sessionManager.setUserToken(userData.getDeviceToken());
+                        CommonMethods.hideDialog(spotsDialog);
+
+
+                    } else {
+                        CommonMethods.showAlertDialog(context, "Login Info", response.body().getMessage());
+                    }
+                } else {
+                    CommonMethods.showErrorMessageWhenStatusNot200(context, response.code());
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<FCMResponse> call, Throwable t) {
+
+                CommonMethods.onFailure(context, TAG, t);
+                CommonMethods.hideDialog(spotsDialog);
+
+            }
+        });
+
 
 
     }
-
 
     private void AlertForLocationServices()
     {
@@ -312,6 +438,17 @@ public class DashBoardActivity extends AppCompatActivity {
     }
 
     private void setupFragment(Fragment fragment,String title) {
+
+        if(title.toString().toLowerCase().equals("geello"))
+        {
+
+           // tvTitle.setText(title);
+            setupCurrentLocation();
+        }
+        else
+        {
+            tvTitle.setText(title);
+        }
         if (fragment != null)
         {
 
@@ -320,10 +457,10 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
                 //getSupportActionBar().setTitle(title);
-                tvTitle.setText(title);
 
 
-                setTitle(title);
+
+               // setTitle(title);
 
 
                 if (NetConnectivity.isOnline(context)) {
@@ -353,10 +490,6 @@ public class DashBoardActivity extends AppCompatActivity {
 
 
 
-        } else {
-
-            //setTitle(getString(R.string.app_name));
-            tvTitle.setText(title);
         }
 
     }

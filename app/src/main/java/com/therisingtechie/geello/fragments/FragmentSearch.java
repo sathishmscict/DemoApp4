@@ -145,6 +145,7 @@ public class FragmentSearch extends android.support.v4.app.Fragment {
 
     private void getAllRestaurantDetailsFromServer() {
 
+        CommonMethods.showDialog(spotsDialog);
 
         ApiInterface apicInterface = ApiClient.getClient().create(ApiInterface.class);
 
