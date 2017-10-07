@@ -34,7 +34,8 @@
                     android:text=""
                     android:textStyle="bold"
 
-                    android:textAllCaps="true"
+
+                    android:textAllCaps="false"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
             </LinearLayout>
         </android.support.v7.widget.Toolbar>

@@ -39,6 +39,8 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.therisingtechie.geello.fragments.FragmentHome;
+import com.therisingtechie.geello.fragments.FragmentOrders;
+import com.therisingtechie.geello.fragments.FragmentProfile;
 import com.therisingtechie.geello.fragments.FragmentSearch;
 import com.therisingtechie.geello.helper.GPSTracker;
 import com.therisingtechie.geello.helper.NetConnectivity;
@@ -126,14 +128,14 @@ public class DashBoardActivity extends AppCompatActivity {
                 } else if (tabId == R.id.tab_orders) {
 
 
-                        fragment = new FragmentHome();
+                        fragment = new FragmentOrders();
                         // Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
                         TITLE = "Orders";
 
 
 
                 } else if (tabId == R.id.tab_profile) {
-                    fragment = new FragmentHome();
+                    fragment = new FragmentProfile();
                     // Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
                     TITLE = "Profile";
 
