@@ -76,15 +76,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class SocialRegistrationActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
-
+public class SocialRegistrationActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
     @BindView(R.id.tvAlready)
     TextView tvAlready;
 
-   // @BindView(R.id.btnFacebookLogin)
+    // @BindView(R.id.btnFacebookLogin)
     Button login_fb_button;
+
+    @BindView(R.id.btnMenu)
+    Button btnMenu;
+
 
     //@BindView(R.id.btnGmailLogin)
     Button login_google_button;
@@ -96,8 +99,7 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
     GoogleApiAvailability google_api_availability;
 
 
-
-    String FIRST_NAME="",LAST_NAME="";
+    String FIRST_NAME = "", LAST_NAME = "";
 
     /*@BindView(R.id.login_button)
     LoginButton login;
@@ -107,10 +109,10 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
     LoginButton login;
     SignInButton signIn_btn;
 
-    private String PROVIDER_USERID="0";
+    private String PROVIDER_USERID = "0";
 
     private int LOGIN_TYPE;
-    private  String USER_EMAIL="";
+    private String USER_EMAIL = "";
 
     private static final int SIGN_IN_CODE = 0;
     private static final int PROFILE_PIC_SIZE = 120;
@@ -122,7 +124,7 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
     private int request_code;
     private SpotsDialog spotsDialog;
     private SessionManager sessionManager;
-    private HashMap<String, String> userDetails= new HashMap<String, String>();
+    private HashMap<String, String> userDetails = new HashMap<String, String>();
     private String TAG = SocialRegistrationActivity.class.getSimpleName();
 
     @BindView(R.id.btnGelloLogin)
@@ -141,7 +143,6 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
         ButterKnife.bind(this);
 
 
-
         AppEventsLogger.activateApp(this);
 
 
@@ -154,6 +155,7 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
 
         sessionManager = new SessionManager(context);
         userDetails = sessionManager.getSessionDetails();
+        sessionManager.setSocialLoginProviderIdDetails("");
 
 
         getSupportActionBar().hide();
@@ -161,7 +163,6 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
 
         login = (LoginButton) findViewById(R.id.login_button);
         signIn_btn = (SignInButton) findViewById(R.id.sign_in_button);
-
 
 
         tvAlready.setOnClickListener(new View.OnClickListener() {
@@ -177,6 +178,7 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
             @Override
             public void onClick(View view) {
 
+                sessionManager.setLoginType(CommonMethods.LOGIN_TYPE_DIRECT);
                 Intent intent = new Intent(context, GelloLoginActivity.class);
                 startActivity(intent);
                 finish();
@@ -196,10 +198,27 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
         login.setReadPermissions(permissions);
 
 
+
+        btnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                sessionManager.setGuestUserDetails();
+                Intent intent = new Intent(context, DashBoardActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
         login_fb_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LOGIN_TYPE = CommonMethods.LOGIN_TYPE_FACEBOOK;
+
+
+                sessionManager.setLoginType(CommonMethods.LOGIN_TYPE_FACEBOOK);
 
                 login.performClick();
             }
@@ -221,6 +240,8 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
                             public void onPermissionGranted(PermissionGrantedResponse response) {
                                 /* ... */
                                 gPlusSignIn();
+
+                                sessionManager.setLoginType(CommonMethods.LOGIN_TYPE_GOOGLE);
                             }
 
                             @Override
@@ -231,10 +252,8 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
                         }).check();
 
 
-
             }
         });
-
 
 
         login.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -248,29 +267,24 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
                 AccessToken accessToken = loginResult.getAccessToken();
                 // AccessToken.getCurrentAccessToken().getToken();
                 // App code
-                GraphRequest graphRequest=GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
+                GraphRequest graphRequest = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject object, GraphResponse response) {
 
-                        if (response.getError()!=null)
-                        {
-                            Log.e(TAG,"Error in Response "+ response);
-                        }
-                        else
-                        {
+                        if (response.getError() != null) {
+                            Log.e(TAG, "Error in Response " + response);
+                        } else {
                             String fbUserId = object.optString("id");
                             PROVIDER_USERID = fbUserId;
 
                             try {
-                                USER_EMAIL=object.optString("email");
+                                USER_EMAIL = object.optString("email");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
 
-
-
-                            FIRST_NAME=object.optString("name");
+                            FIRST_NAME = object.optString("name");
                             try {
                                 LAST_NAME = object.optString("last_name");
                                 FIRST_NAME = object.optString("first_name");
@@ -279,11 +293,8 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
                             }
 
 
-
                             String fbUserProfilePics = "http://graph.facebook.com/" + fbUserId + "/picture?type=large";
-                            Log.e(TAG,"Json Object Data "+object+" Email id "+ USER_EMAIL+" Name :"+FIRST_NAME);
-
-
+                            Log.e(TAG, "Json Object Data " + object + " Email id " + USER_EMAIL + " Name :" + FIRST_NAME);
 
 
                             //http://graph.facebook.com//picture?type=large
@@ -303,12 +314,10 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
 
                     }
                 });
-                Bundle bundle=new Bundle();
+                Bundle bundle = new Bundle();
                 bundle.putString("fields", "id,name,email,gender,birthday,first_name,last_name");
                 graphRequest.setParameters(bundle);
                 graphRequest.executeAsync();
-
-
 
 
                 //Intent in = new Intent(context, NewDashBoardActivity.class);
@@ -374,17 +383,14 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
     }
 
 
-
     @Override
-    protected void onActivityResult(int requestCode, int responseCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int responseCode, Intent data) {
         super.onActivityResult(requestCode, responseCode, data);
 //64206,-1,dalvik.system.PathClassLoader[DexPathList[[zip file "/data/app/com.yelona-2/base.apk", zip file "/data/app/com.yelona-2/split_lib_dependencies_apk.apk", zip file "/data/app/com.yelona-2/split_lib_slice_0_apk.apk", zip file "/data/app/com.yelona-2/split_lib_slice_1_apk.apk", zip file "/data/app/com.yelona-2/split_lib_slice_2_apk.apk", zip file "/data/app/com.yelona-2/split_lib_slice_3_apk.apk", zip file "/data/app/com.yelona-2/split_lib_slice_4_apk.apk", zip file "/data/app/com.yelona-2/split_lib_slice_5_apk.apk", zip file "/data/app/com.yelona-2/split_lib_slice_6_apk.apk", zip file "/data/app/com.yelona-2/split_lib_slice_7_apk.apk", zip file "/data/app/com.yelona-2/split_lib_slice_8_apk.apk", zip file "/data/app/com.yelona-2/split_lib_slice_9_apk.apk"],nativeLibraryDirectories=[/data/app/com.yelona-2/lib/arm, /system/lib, /vendor/lib]]]
         if (login_fb_button.getText().toString().toLowerCase().contains("facebook")) {
             callbackManager.onActivityResult(requestCode, responseCode, data);
         }
-        if (requestCode == SIGN_IN_CODE)
-        {
+        if (requestCode == SIGN_IN_CODE) {
             request_code = requestCode;
             if (responseCode != RESULT_OK) {
                 is_signInBtn_clicked = false;
@@ -425,8 +431,7 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
     }*/
 
     //gmail here
-    private void buidNewGoogleApiClient()
-    {
+    private void buidNewGoogleApiClient() {
 
         google_api_client = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -463,8 +468,7 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
 
     public void onConnectionFailed(ConnectionResult result) {
         try {
-            if (!result.hasResolution())
-            {
+            if (!result.hasResolution()) {
                 google_api_availability.getErrorDialog(this, result.getErrorCode(), request_code).show();
                 return;
             }
@@ -548,7 +552,7 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
         try {
             String personName = currentPerson.getDisplayName();
             String personPhotoUrl = currentPerson.getImage().getUrl();
-            PROVIDER_USERID=currentPerson.getId();
+            PROVIDER_USERID = currentPerson.getId();
             FIRST_NAME = currentPerson.getName().getFamilyName();
             LAST_NAME = currentPerson.getName().getGivenName();
 
@@ -629,22 +633,19 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
     }
 
 
-
-    private void sendLoginDetailsToServer()
-    {
-
+    private void sendLoginDetailsToServer() {
 
 
         ApiInterface apicInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        UserSocialRegistration usr= new UserSocialRegistration();
+        UserSocialRegistration usr = new UserSocialRegistration();
         usr.first_name = FIRST_NAME;
         usr.last_name = LAST_NAME;
         usr.provider_id = PROVIDER_USERID;
-        usr.login_type  = LOGIN_TYPE;
+        usr.login_type = LOGIN_TYPE;
         usr.email = USER_EMAIL;
 
-        Log.d(TAG, "URL api/register : " + CommonMethods.WEBSITE + "api/register?body="+usr.toString());
+        Log.d(TAG, "URL api/register : " + CommonMethods.WEBSITE + "api/register?body=" + usr.toString());
 
         apicInterface.sendSocialRegistrationDetails(usr).enqueue(new Callback<UserDataResponse>() {
 
@@ -657,6 +658,7 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
                 String mobiel = "";
                 if (response.code() == 200) {
 
+                    sessionManager.setSocialLoginProviderIdDetails(PROVIDER_USERID);
                     String str_error = response.body().getMessage();
                     boolean error_status = response.body().getFlag();
 
@@ -664,15 +666,15 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
                     if (error_status == true) {
 
 
-                        UserDataResponse.Data userData =  response.body().getData();
+                        UserDataResponse.Data userData = response.body().getData();
 
-                        String  userid = userData.getId();
+                        String userid = userData.getId();
                         String token = userData.getToken();
-                        boolean isNewUser  = userData.getIsNewUser();
+                        boolean isNewUser = userData.getIsNewUser();
                         String firstname = userData.getFirstName();
 
                         mobiel = userData.getMobile();
-                        sessionManager.setUserDetails(userData.getFirstName() , userData.getLastName(),USER_EMAIL , userData.getMobile(),userData.getImage(),userData.getIsActive(),userData.getSmsCode(),userData.getToken(),userData.getId(),userData.getIsNewUser());
+                        sessionManager.setUserDetails(userData.getFirstName(), userData.getLastName(), USER_EMAIL, userData.getMobile(), userData.getImage(), userData.getIsActive(), userData.getSmsCode(), userData.getToken(), userData.getId(), userData.getIsNewUser());
 
 
                     }
@@ -681,22 +683,18 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
                 }
                 CommonMethods.hideDialog(spotsDialog);
 
-                if(mobiel.length() == 10)
-                {
+                if (mobiel.length() == 10) {
 
                     //Replace as Verification screen
-                    Intent intent = new Intent(context , VerificationActivity.class);
+                    Intent intent = new Intent(context, VerificationActivity.class);
                     startActivity(intent);
                     finish();
-                }
-                else
-                {
-                    Intent intent = new Intent(context , SimpleRegistrationActivity.class);
+                } else {
+                    Intent intent = new Intent(context, SimpleRegistrationActivity.class);
                     startActivity(intent);
                     finish();
 
                 }
-
 
 
             }
@@ -711,25 +709,17 @@ public class SocialRegistrationActivity extends AppCompatActivity implements Goo
         });
 
 
-
-
-
-
-
-
         CommonMethods.showDialog(spotsDialog);
 
         String url_check_credentials = null;
-        String fcm_tokenid="";
+        String fcm_tokenid = "";
         try {
-            MyFirebaseInstanceIDService mid= new MyFirebaseInstanceIDService();
-            fcm_tokenid =String.valueOf(mid.onTokenRefreshNew(context));
+            MyFirebaseInstanceIDService mid = new MyFirebaseInstanceIDService();
+            fcm_tokenid = String.valueOf(mid.onTokenRefreshNew(context));
         } catch (Exception e) {
-            fcm_tokenid="";
+            fcm_tokenid = "";
             e.printStackTrace();
         }
-
-
 
 
     }

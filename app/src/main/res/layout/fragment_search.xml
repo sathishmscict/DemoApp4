@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/cream_color"
+
+    android:orientation="vertical"
+
+    >
+
+
+    <!--<EditText
+        android:id="@+id/tvSortRestaurants"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:drawablePadding="8dp"
+
+        android:layout_margin="8dp"
+        android:drawableLeft="@drawable/icon_search"
+        android:layout_height="wrap_content"
+         />-->
+    <!--<android.support.design.widget.TextInputLayout
+        android:id="@+id/edtFirstNameWrapper"
+        android:layout_width="fill_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+
+
+        android:layout_marginLeft="8dp"
+ android:theme="@style/edtRegistrationStyle"
+        >-->
+    <!--android:theme="@style/edtRegistrationStyle"-->
+    <EditText
+
+        android:id="@+id/tvSortRestaurants"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+
+        android:drawablePadding="10dp"
+        android:singleLine="true"
+        android:drawableLeft="@drawable/icon_search"
+        android:hint="  Search for a restaurant or dish"
+
+        android:inputType="textCapSentences"
+        android:layout_margin="8dp"
+
+
+
+        android:text="" />
+
+    <requestFocus />
+    <!--</android.support.design.widget.TextInputLayout>-->
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvCategories"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>

@@ -30,7 +30,7 @@
                 android:scaleType="fitXY" />
 
             <TextView
-                android:id="@+id/tvCategory"
+                android:id="@+id/tvCategoryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -38,7 +38,7 @@
                 android:singleLine="true"
                 android:text="Category"
                 android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
-                android:textColor="@color/white"
+                android:textColor="@color/cream_color"
                 android:textSize="25dp"
                 android:textStyle="bold" />
         </RelativeLayout>

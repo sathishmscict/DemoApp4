@@ -6,7 +6,7 @@ package com.therisingtechie.geello.request;
 
 public class UserSimpleRegistration {
 
-    public  String first_name,last_name,email,mobile,password;
+    public  String first_name,last_name,email,mobile,password,provider_id;
     public  int login_type ;
 
 

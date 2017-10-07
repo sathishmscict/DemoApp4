@@ -217,9 +217,24 @@ public class SimpleRegistrationActivity extends AppCompatActivity {
         usr.email = edtEmail.getText().toString();
         usr.mobile = edtMobile.getText().toString();
         usr.password = edtPassword.getText().toString();
-        usr.login_type  = CommonMethods.LOGIN_TYPE_DIRECT;
+        usr.provider_id = userDetails.get(SessionManager.KEY_PROVIDER_ID);
+        if(userDetails.get(SessionManager.KEY_LOGIN_TYPE).equals(String.valueOf(CommonMethods.LOGIN_TYPE_FACEBOOK)))
+        {
+            usr.login_type  = CommonMethods.LOGIN_TYPE_FACEBOOK;
 
-        Log.d(TAG, "URL api/register : " + CommonMethods.WEBSITE + "api/register?body=");
+        }
+        else if(userDetails.get(SessionManager.KEY_LOGIN_TYPE).equals(String.valueOf(CommonMethods.LOGIN_TYPE_GOOGLE)))
+        {
+            usr.login_type  = CommonMethods.LOGIN_TYPE_GOOGLE;
+
+        }
+        else
+        {
+            usr.login_type  = CommonMethods.LOGIN_TYPE_DIRECT;
+
+        }
+
+        Log.d(TAG, "URL api/register : " + CommonMethods.WEBSITE + "api/register?body="+usr.toString());
 
         apicInterface.sendRegistrationDetails(usr).enqueue(new Callback<UserDataResponse>() {
 

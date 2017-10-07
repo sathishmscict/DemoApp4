@@ -95,9 +95,10 @@ public class MyApplication  extends Application {
 
         //Initializing firebase
         try {
-              Firebase.setAndroidContext(getApplicationContext());
+            Firebase.setAndroidContext(getApplicationContext());
 
-        Fabric.with(this, new Crashlytics());
+
+            Fabric.with(this, new Crashlytics());
 
             final Fabric fabric = new Fabric.Builder(this)
                     .kits(new Crashlytics())
@@ -106,12 +107,12 @@ public class MyApplication  extends Application {
             Fabric.with(fabric);
 
 
+            Fabric.with(getApplicationContext(), new Crashlytics());
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
 

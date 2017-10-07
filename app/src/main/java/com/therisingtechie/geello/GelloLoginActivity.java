@@ -93,6 +93,9 @@ public class GelloLoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
+
+                sessionManager.setLoginType(CommonMethods.LOGIN_TYPE_DIRECT);
+
                 if (edtEmail.getText().toString().equals("") || edtPassword.getText().toString().equals("")) {
                     CommonMethods.showAlertDialog(context, "Login Info", "Please enter email and Password");
                 } else if (edtEmail.getText().toString().equals("")) {

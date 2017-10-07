@@ -48,5 +48,12 @@
     <string name="str_enter_code_here">enter code here</string>
 
 
+    <string name="no_network">Not able to connect to App</string>
+    <string name="no_network2">Please Enable Wifi or Mobile data</string>
+    <string name="no_network3">Sorry,no Internet conenctivity detected. Please reconnect and try again.</string>
+
+
+
+
 
 </resources>
