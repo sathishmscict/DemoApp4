@@ -7,8 +7,21 @@
     <color name="white">#FFFFFF</color>
     <color name="cream_color">#F2F2F4</color>
 
+    <color name="image_load_color">#aa2b2241</color>
+
+    <color name="category_text_color">#DFD8D3</color>
+
+    <color name="PrimaryTextColor">#b52b2241</color>
     <color name="login_screen_cream_color">#FEFEFE</color>
     <color name="text_color">#D6D2E0</color>
     <color name="red">#ed1f1f</color>
+
+
+    <color name="filtersfab">#3f51b5</color>
+    <color name="filters_header">#303f9f</color>
+    <color name="filters_buttons">#ff4081</color>
+    <color name="filters_buttons_selected">#c2185b</color>
+    <color name="filters_chips">#b3e5fc</color>
+
 
 </resources>

@@ -161,7 +161,20 @@ public class SimpleRegistrationActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    edtEmailWrapper.setErrorEnabled(false);
+
+
+                    if(!CommonMethods.checkEmail(edtEmail.getText().toString().trim()))
+                    {
+                        edtEmailWrapper.setErrorEnabled(true);
+                        edtEmailWrapper.setError("Invalid Email");
+                    }
+                    else
+                    {
+                        edtEmailWrapper.setErrorEnabled(false);
+
+                    }
+
+
                 }
 
                 if (edtMobile.getText().toString().equals("")) {
@@ -192,6 +205,8 @@ public class SimpleRegistrationActivity extends AppCompatActivity {
                 }
                 else
                 {
+
+
                     edtPasswordWrapper.setErrorEnabled(false);
                 }
 
@@ -217,9 +232,24 @@ public class SimpleRegistrationActivity extends AppCompatActivity {
         usr.email = edtEmail.getText().toString();
         usr.mobile = edtMobile.getText().toString();
         usr.password = edtPassword.getText().toString();
-        usr.login_type  = CommonMethods.LOGIN_TYPE_DIRECT;
+        usr.provider_id = userDetails.get(SessionManager.KEY_PROVIDER_ID);
+        if(userDetails.get(SessionManager.KEY_LOGIN_TYPE).equals(String.valueOf(CommonMethods.LOGIN_TYPE_FACEBOOK)))
+        {
+            usr.login_type  = CommonMethods.LOGIN_TYPE_FACEBOOK;
 
-        Log.d(TAG, "URL api/register : " + CommonMethods.WEBSITE + "api/register?body=");
+        }
+        else if(userDetails.get(SessionManager.KEY_LOGIN_TYPE).equals(String.valueOf(CommonMethods.LOGIN_TYPE_GOOGLE)))
+        {
+            usr.login_type  = CommonMethods.LOGIN_TYPE_GOOGLE;
+
+        }
+        else
+        {
+            usr.login_type  = CommonMethods.LOGIN_TYPE_DIRECT;
+
+        }
+
+        Log.d(TAG, "URL api/register : " + CommonMethods.WEBSITE + "api/register?body="+usr.toString());
 
         apicInterface.sendRegistrationDetails(usr).enqueue(new Callback<UserDataResponse>() {
 
@@ -252,6 +282,7 @@ public class SimpleRegistrationActivity extends AppCompatActivity {
                         Intent intent = new Intent(context, VerificationActivity.class);
                         startActivity(intent);
                         finish();
+                        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
 
 
@@ -262,9 +293,7 @@ public class SimpleRegistrationActivity extends AppCompatActivity {
                 CommonMethods.hideDialog(spotsDialog);
 
 
-                Intent intent = new Intent(context , DashBoardActivity.class);
-                startActivity(intent);
-                finish();
+
 
             }
 
@@ -285,9 +314,10 @@ public class SimpleRegistrationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(context, GelloLoginActivity.class);
+            Intent intent = new Intent(context, SocialRegistrationActivity.class);
             startActivity(intent);
             finish();
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
         }
         return super.onOptionsItemSelected(item);
@@ -296,8 +326,9 @@ public class SimpleRegistrationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(context, GelloLoginActivity.class);
+        Intent intent = new Intent(context, SocialRegistrationActivity.class);
         startActivity(intent);
         finish();
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 }

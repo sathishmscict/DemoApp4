@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -85,6 +86,7 @@ public class GelloLoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(context, SimpleRegistrationActivity.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
 
@@ -93,7 +95,10 @@ public class GelloLoginActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                if (edtEmail.getText().toString().equals("") || edtPassword.getText().toString().equals("")) {
+
+                sessionManager.setLoginType(CommonMethods.LOGIN_TYPE_DIRECT);
+
+                if (edtEmail.getText().toString().equals("") && edtPassword.getText().toString().equals("")) {
                     CommonMethods.showAlertDialog(context, "Login Info", "Please enter email and Password");
                 } else if (edtEmail.getText().toString().equals("")) {
                     CommonMethods.showAlertDialog(context, "Login Info", "Please enter email");
@@ -101,16 +106,34 @@ public class GelloLoginActivity extends AppCompatActivity {
                 } else if (edtPassword.getText().toString().equals("")) {
                     CommonMethods.showAlertDialog(context, "Login Info", "Please enter password");
 
-                } else {
-                    getLoginDetailsFromServer();
+                }
+                else {
+
+                    if(!checkEmail(edtEmail.getText().toString().trim()))
+                    {
+                        CommonMethods.showAlertDialog(context, "Login Info", "Invalid email id");
+
+                    }
+                    else
+                    {
+                        getLoginDetailsFromServer();
+                    }
+
+
 
                 }
 
-                Toast.makeText(context, "Clicked on login", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(context, "Clicked on login", Toast.LENGTH_SHORT).show();
             }
         });
 
 
+    }
+
+
+    private boolean checkEmail(String email) {
+        System.out.println("Email Validation:==>" + email);
+        return CommonMethods.EMAIL_ADDRESS_PATTERN.matcher(email).matches();
     }
 
     private void getLoginDetailsFromServer() {
@@ -148,20 +171,22 @@ public class GelloLoginActivity extends AppCompatActivity {
 
                         String userid = userData.getId();
                         String token = userData.getToken();
-                        boolean isNewUser = userData.getIsNewUser();
+                        //boolean isNewUser = userData.getIsNewUser();
                         String firstname = userData.getFirstName();
 
-                        sessionManager.setUserDetails(userData.getFirstName(), userData.getLastName(), userData.getEmail(), userData.getMobile(), userData.getImage(), userData.getIsActive(), userData.getSmsCode(), userData.getToken(), userData.getId(), userData.getIsNewUser());
+                        sessionManager.setUserDetails(userData.getFirstName(), userData.getLastName(), userData.getEmail(), userData.getMobile(), userData.getImage(), userData.getIsActive(), userData.getSmsCode(), userData.getToken(), userData.getId(), false);
                         CommonMethods.hideDialog(spotsDialog);
                         if (userData.getMobile().length() == 10) {
                             Intent intent = new Intent(context, VerificationActivity.class);
                             startActivity(intent);
                             finish();
+                            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
                         } else {
                             Intent intent = new Intent(context, SimpleRegistrationActivity.class);
                             startActivity(intent);
                             finish();
+                            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
 
                         }
@@ -185,6 +210,29 @@ public class GelloLoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(context, SocialRegistrationActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(context, SocialRegistrationActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
 }

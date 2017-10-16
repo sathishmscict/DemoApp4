@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-        setTitle("Yelona Login");
+        setTitle(" Login");
 
         pDialog = new SpotsDialog(context);
         pDialog.setCancelable(false);
@@ -185,6 +185,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 Intent intent = new Intent(getApplicationContext(), SimpleRegistrationActivity.class);
                 startActivity(intent);
                 finish();
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
 
@@ -279,6 +280,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 startActivity(intent);
                 finish();
 
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
             }
         });
 
@@ -983,6 +985,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             //i.putExtra("ActivityName",ACTIVITYNAME);
             startActivity(i);
             finish();
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         } catch (Exception e) {
             Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Error in Converting Class : " + e.getMessage());

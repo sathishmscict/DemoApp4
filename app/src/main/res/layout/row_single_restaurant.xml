@@ -1,57 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/AppTheme.Card.Margins"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/cvRestaurant"
+    style="@style/AppTheme.Card.WithoutMargins"
     android:layout_width="fill_parent"
-
     android:layout_height="wrap_content"
+
+    card_view:cardUseCompatPadding="true"
     android:orientation="horizontal">
 
 
     <LinearLayout
-        android:id="@+id/thumbnail"
+
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
 
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="175dp">
+            android:layout_height="190dp">
 
             <ImageView
-                android:id="@+id/iv_category_image"
+                android:id="@+id/iv_restaurnat_main_image"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:background="@drawable/splash_screen"
+                android:background="@color/image_load_color"
                 android:scaleType="fitXY" />
 
             <ImageView
-                android:id="@+id/tvCategory"
+                android:id="@+id/ivRestaurantIcon"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="7dp"
 
 
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="7dp"
 
-                android:layout_marginTop="8dp"
                 android:singleLine="true"
                 android:src="@drawable/icon_india"
                 android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
         </RelativeLayout>
 
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+           android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
@@ -59,7 +63,7 @@
                 android:id="@+id/tvRestaurantName"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_marginLeft="10dp"
 
                 android:layout_weight="1"
                 android:singleLine="true"
@@ -71,30 +75,34 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
                 android:layout_weight="2"
                 android:gravity="right"
-                android:visibility="visible"
-                android:layout_marginRight="8dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="visible">
 
                 <ImageView
+                    android:id="@+id/ivVeg"
                     android:layout_width="wrap_content"
 
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_india" />
+                    android:src="@drawable/icon_vegetarian" />
+
 
                 <ImageView
+                    android:id="@+id/ivNonVeg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@drawable/icon_india" />
+                    android:src="@drawable/icon_non_veg" />
 
                 <ImageView
+                    android:id="@+id/ivJain"
                     android:layout_width="wrap_content"
 
                     android:layout_height="wrap_content"
-                    android:src="@drawable/icon_india" />
+                    android:src="@drawable/icon_jain" />
 
 
             </LinearLayout>
@@ -102,10 +110,15 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tvMenuName"
+            android:id="@+id/tvRestaurantMenuReference"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+
+android:layout_marginLeft="10dp"
+            android:layout_marginBottom="1dp"
+            android:maxLines="2"
+            android:minLines="2"
+            android:singleLine="true"
 
             android:text="Burger * Fastfood  * ColdDrinks" />
     </LinearLayout>

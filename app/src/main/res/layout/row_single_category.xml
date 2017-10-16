@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/AppTheme.Card.Margins"
-    android:layout_width="fill_parent"
 
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_margin="4dp"
+
+    android:orientation="horizontal"
+    card_view:cardUseCompatPadding="false">
 
 
     <LinearLayout
@@ -15,36 +18,94 @@
 
         android:orientation="vertical">
 
-        <RelativeLayout
+      <!--  <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="150dp">
 
             <ImageView
+
                 android:id="@+id/iv_category_image"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:background="@drawable/splash_screen"
-                android:scaleType="fitXY" />
+                android:scaleType="fitXY"
+                android:src="@drawable/sa" />
 
             <TextView
-                android:id="@+id/tvCategory"
+                android:id="@+id/tvCategoryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:layout_centerInParent="@+id/imageView3"
                 android:singleLine="true"
                 android:text="Category"
                 android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
-                android:textColor="@color/white"
+                android:textColor="@color/category_text_color"
                 android:textSize="25dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="113dp"
+                android:layout_marginEnd="113dp"
+                android:layout_marginTop="60dp" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                app:srcCompat="@drawable/sa2" />
+        </RelativeLayout>-->
+
+
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:background="@color/colorPrimary" >
+
+            <ImageView
+                android:id="@+id/iv_category_image"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+
+                android:scaleType="fitXY"
+                android:src="@drawable/sa" />
+
+            <ImageView
+                android:id="@+id/outside_imageview"
+                android:layout_width="50dp"
+                android:src="@color/image_load_color"
+                android:layout_height="fill_parent"
+                android:layout_alignTop="@id/iv_category_image"
+                android:layout_alignBottom="@id/iv_category_image"
+                android:layout_alignLeft="@id/iv_category_image"
+                android:layout_alignRight="@id/iv_category_image"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/tvCategoryTitle"
+                android:layout_width="fill_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Category"
+                android:textAppearance="?android:attr/textAppearanceLargePopupMenu"
+                android:textColor="@color/category_text_color"
+                android:textSize="25dp"
+
+
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
-
     </LinearLayout>
+
+
 
 
 </android.support.v7.widget.CardView>

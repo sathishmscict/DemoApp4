@@ -41,6 +41,9 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+
+        // Enabling multidex support.
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -59,12 +62,25 @@ dependencies {
 
 
     compile project(':bottom-bar')
+
+    //compile group: 'org.jacoco', name: 'org.jacoco.agent', version: '0.7.5.201505241946'
+
+
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
-    compile 'com.google.firebase:firebase-crash:10.0.1'
 
+    /* compile 'com.google.firebase:firebase-crash:10.0.1'
+    compile 'com.firebase:firebase-client-android:2.5.2'
+    compile 'com.google.firebase:firebase-core:10.0.1'
+    compile 'com.google.firebase:firebase-messaging:10.0.1'*/
+
+
+
+
+    compile 'com.google.firebase:firebase-crash:10.0.1'
     compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:support-v4:26.+'
     compile 'com.android.support:design:26.+'
     compile 'com.android.support:cardview-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -82,19 +98,11 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.jakewharton:butterknife:8.7.0'
     compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
-
-
     compile 'com.firebase:firebase-client-android:2.5.2'
     compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-messaging:10.0.1'
     compile 'com.google.android.gms:play-services-auth:10.0.1'
     compile 'com.google.android.gms:play-services-plus:10.0.1'
-   /* compile 'com.google.firebase:firebase-crash:10.0.1'
-    compile 'com.firebase:firebase-client-android:2.5.2'
-    compile 'com.google.firebase:firebase-core:10.0.1'
-    compile 'com.google.firebase:firebase-messaging:10.0.1'*/
-
-
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

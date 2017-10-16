@@ -3,101 +3,87 @@
 
 
 <!--
+
     <tab
-        activeColor="#4CAF50"
-        badgeBackgroundColor="#E64A19"
-        barColorWhenSelected="#E64A19"
+        activeColor="#171126"
+        badgeBackgroundColor="#FFFFFF"
+        barColorWhenSelected="#2B2241"
         icon="@drawable/icon_home"
         id="@+id/tab_home"
         inActiveColor="#EFEFEF"
         title="Home" />
 
     <tab
-        activeColor="#388E3C"
-
-
-        badgeBackgroundColor="#2F3E9E"
-        barColorWhenSelected="#2F3E9E"
-        icon="@drawable/icon_wallet"
-        id="@+id/tab_wallet"
+        activeColor="#171126"
+        badgeBackgroundColor="#FFFFFF"
+        barColorWhenSelected="#2B2241"
+        icon="@drawable/icon_search2"
+        id="@+id/tab_search"
         inActiveColor="#EFEFEF"
-        title="Wallet" />
+        title="Search" />
+
+
 
     <tab
-        activeColor="#388E3C"
-        badgeBackgroundColor="#d1395c"
-        barColorWhenSelected="#d1395c"
+        activeColor="#171126"
+        badgeBackgroundColor="#689F38"
+        barColorWhenSelected="#2B2241"
+        icon="@drawable/icon_orders"
+        id="@+id/tab_orders"
+        inActiveColor="#EFEFEF"
+        title="Orders" />
+
+    <tab
+        activeColor="#171126"
+        badgeBackgroundColor="#689F38"
+        barColorWhenSelected="#2B2241"
 
         icon="@drawable/icon_profile"
         id="@+id/tab_profile"
         inActiveColor="#EFEFEF"
         title="Profile" />
+-->
+
 
     <tab
-        activeColor="#388E3C"
-        badgeBackgroundColor="#a854d4"
-        barColorWhenSelected="#a854d4"
-        icon="@drawable/icon_offer"
-        id="@+id/tab_offer"
-        inActiveColor="#EFEFEF"
-        title="Offers" />
-
-    <tab
-        activeColor="#388E3C"
-
-        badgeBackgroundColor="#D32F2F"
-        barColorWhenSelected="#D32F2F"
-
-        icon="@drawable/icon_logout"
-        id="@+id/tab_logout"
-        inActiveColor="#EFEFEF"
-        title="Logout" />-->
-
-    <tab
-        activeColor="#FFB300"
-        badgeBackgroundColor="#689F38"
-        barColorWhenSelected="#689F38"
-        icon="@drawable/icon_india"
+        activeColor="#2B2241"
+        badgeBackgroundColor="#EFEFEF"
+        barColorWhenSelected="#EFEFEF"
+        icon="@drawable/icon_home"
         id="@+id/tab_home"
-        inActiveColor="#EFEFEF"
+        inActiveColor="#2B2241"
         title="Home" />
 
     <tab
-        activeColor="#FFB300"
-        badgeBackgroundColor="#689F38"
-        barColorWhenSelected="#689F38"
-        icon="@drawable/icon_india"
-        id="@+id/tab_wallet"
-        inActiveColor="#EFEFEF"
-        title="Wallet" />
+        activeColor="#2B2241"
+        badgeBackgroundColor="#EFEFEF"
+        barColorWhenSelected="#EFEFEF"
+        icon="@drawable/icon_search2"
+        id="@+id/tab_search"
+        inActiveColor="#2B2241"
+        title="Search" />
 
-<!--    <tab
-        activeColor="#000000"
-        badgeBackgroundColor="#8BC34A"
-        barColorWhenSelected="#8BC34A"
+
+
+    <tab
+        activeColor="#171126"
+        badgeBackgroundColor="#EFEFEF"
+        barColorWhenSelected="#EFEFEF"
+        icon="@drawable/icon_orders"
+        id="@+id/tab_orders"
+        inActiveColor="#2B2241"
+        title="Orders" />
+
+    <tab
+        activeColor="#171126"
+        badgeBackgroundColor="#EFEFEF"
+        barColorWhenSelected="#EFEFEF"
 
         icon="@drawable/icon_profile"
         id="@+id/tab_profile"
-        inActiveColor="#EFEFEF"
-        title="Profile" />-->
+        inActiveColor="#2B2241"
+        title="Profile" />
 
-    <tab
-        activeColor="#FFC107"
-        badgeBackgroundColor="#689F38"
-        barColorWhenSelected="#689F38"
-        icon="@drawable/icon_india"
-        id="@+id/tab_offer"
-        inActiveColor="#EFEFEF"
-        title="Offers" />
 
-    <tab
-        activeColor="#FFC107"
-        badgeBackgroundColor="#689F38"
-        barColorWhenSelected="#689F38"
-
-        icon="@drawable/icon_india"
-        id="@+id/tab_logout"
-        inActiveColor="#EFEFEF"
-        title="Login" />
 
 </tabs>

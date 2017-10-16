@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.therisingtechie.geello.GelloLoginActivity;
+import com.therisingtechie.geello.SplashScreenActivity;
 
 import java.util.HashMap;
 
@@ -50,6 +51,8 @@ public class SessionManager {
     public static final String KEY_LATTITUDE = "Lattitude", KEY_LONGTITUDE = "Longtitude", KEY_BRANCHNAME = "CompanyName", KEY_VENDOR_ADDRESS = "companyAddress";
 
     public static final String KEY_DISTANCE_INTERVAL_IN_KM = "DistanceInKm";
+    public static final  String KEY_LOGIN_TYPE="LoginType",KEY_PROVIDER_ID = "PROVIDER_ID";
+
 
 
     public SessionManager(Context context) {
@@ -111,11 +114,14 @@ public class SessionManager {
         HashMap<String, String> user = new HashMap<String, String>();
 
 
+        user.put(KEY_PROVIDER_ID , pref.getString(KEY_PROVIDER_ID , ""));
 
-        user.put(KEY_FIRST_NAME, pref.getString(KEY_FIRST_NAME, "0"));
-        user.put(KEY_LAST_NAME, pref.getString(KEY_LAST_NAME, "0"));
-        user.put(KEY_PROFILE_PIC_URL, pref.getString(KEY_PROFILE_PIC_URL, "0"));
-        user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, "0"));
+        user.put(KEY_LOGIN_TYPE , pref.getString(KEY_LOGIN_TYPE,"0"));
+
+        user.put(KEY_FIRST_NAME, pref.getString(KEY_FIRST_NAME, ""));
+        user.put(KEY_LAST_NAME, pref.getString(KEY_LAST_NAME, ""));
+        user.put(KEY_PROFILE_PIC_URL, pref.getString(KEY_PROFILE_PIC_URL, ""));
+        user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, ""));
         user.put(KEY_IS_NEWUSER, pref.getString(KEY_IS_NEWUSER, "0"));
 
 
@@ -163,7 +169,7 @@ public class SessionManager {
         user.put(KEY_USER_IS_ACTIVE, pref.getString(KEY_USER_IS_ACTIVE, "1"));
         user.put(KEY_USER_IS_REFERRED, pref.getString(KEY_USER_IS_REFERRED, "0"));
 
-        user.put(KEY_USER_MOBILE, pref.getString(KEY_USER_MOBILE, "0"));
+        user.put(KEY_USER_MOBILE, pref.getString(KEY_USER_MOBILE, ""));
 
 
         return user;
@@ -188,7 +194,19 @@ public class SessionManager {
 
 
 
+    public void setGuestUserDetails()
+    {
+        editor.putString(KEY_USER_ID ,"-1");
+        editor.commit();
+    }
 
+
+    public void setUserToken(String userToken)
+    {
+        editor.putString(KEY_TOKEN , userToken);
+        editor.commit();
+
+    }
     public void setUserDetails(String firstName, String lastName, String email, String mobile, String image, boolean isActive, String smsCode, String token, String id, boolean isNewUser) {
 
 
@@ -259,7 +277,7 @@ public class SessionManager {
         editor.commit();
 
         // After logout redirect user to Loing Activity
-        Intent i = new Intent(_context, GelloLoginActivity.class);
+        Intent i = new Intent(_context, SplashScreenActivity.class);
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -303,4 +321,14 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void setLoginType(int loginTypeDirect) {
+
+        editor.putString(KEY_LOGIN_TYPE , String.valueOf(loginTypeDirect));
+        editor.commit();
+    }
+
+    public void setSocialLoginProviderIdDetails(String provider_userid) {
+        editor.putString(KEY_PROVIDER_ID , provider_userid);
+        editor.commit();
+    }
 }

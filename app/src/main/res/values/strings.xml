@@ -14,7 +14,7 @@
     <!--Login Activity strings-->
     <string name="str_logintext">LOG IN WITH GEELLO  ACCOUNT</string>
     <string name="btn_login">LOGIN</string>
-    <string name="str_forgot_password">FORGOT PASSWORD</string>
+    <string name="str_forgot_password">FORGOT PASSWORD ?</string>
     <string name="str_btn_register">REGISTER</string>
 
     Simple Registration Activity
@@ -30,7 +30,7 @@
     <string name="str_not_already">Not a member yet? Signup now</string>
 
     <string name="str_btn_see_menu">See Menu</string>
-    <string name="str_btn_signup_with_gello">Sign up with Gello</string>
+    <string name="str_btn_signup_with_gello">Sign up with Geello</string>
     <string name="str_btn_signup_with_facebook">Sign up with Facebook</string>
     <string name="str_btn_signup_with_gmail">Sign up with Gmail</string>
     <string name="title_activity_search_restaurants">Search Restaurants</string>
@@ -47,6 +47,12 @@
     <string name="str_resendcode">Resend Code</string>
     <string name="str_enter_code_here">enter code here</string>
 
+
+    <string name="no_network">Not able to connect to App</string>
+    <string name="no_network2">Please Enable Wifi or Mobile data</string>
+    <string name="no_network3">Sorry,no Internet conenctivity detected. Please reconnect and try again.</string>
+    <string name="title_activity_new_dashboard">NewDashboardActivity</string>
+    <string name="str_search_restaurant">Search for a restaurants or dish</string>
 
 
 </resources>

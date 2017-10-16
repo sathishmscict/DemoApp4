@@ -46,6 +46,7 @@ public class CommonMethods {
 
 
 
+
  /*   Registration Related Constatnts*/
 
     public static final int LOGIN_TYPE_FACEBOOK = 1;
@@ -281,19 +282,23 @@ public static final int RESTRO_PRODUCT_TASTE_SPICY = 1;
     }
 
     public static void onFailure(Context context, String TAG, Throwable t) {
-        //  Toast.makeText(context, "Unable to submit post to API.", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "Unable to submit post to API. Message  = " + t.getMessage());
-        Log.d(TAG, "Unable to submit post to API. LocalizedMessage = " + t.getLocalizedMessage());
-        Log.d(TAG, "Unable to submit post to API. Cause = " + t.getCause());
-        Log.d(TAG, "Unable to submit post to API. StackTrace = " + t.getStackTrace());
+        try {
+            //  Toast.makeText(context, "Unable to submit post to API.", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Unable to submit post to API. Message  = " + t.getMessage());
+            Log.d(TAG, "Unable to submit post to API. LocalizedMessage = " + t.getLocalizedMessage());
+            Log.d(TAG, "Unable to submit post to API. Cause = " + t.getCause());
+            Log.d(TAG, "Unable to submit post to API. StackTrace = " + t.getStackTrace());
 
-        if (t.getMessage().equals("timeout")) {
+            if (t.getMessage().equals("timeout")) {
 
 
-            Toast.makeText(context, "Cannot process with the operation.No network connection! Please check your internet connection.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Cannot process with the operation.No network connection! Please check your internet connection.", Toast.LENGTH_SHORT).show();
 
-        } else {
-            Toast.makeText(context, "Sorry , try again...", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Sorry , try again...", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+
+
+            android:id="@+id/btnSort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Sort"
+            />
+        <Button
+            android:id="@+id/btnPrice"
+            android:layout_width="wrap_content"
+            android:background="@null"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            />
+        <Button
+            android:id="@+id/btnDietary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Dietary"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/llSort">
+
+        <Button
+            android:id="@+id/btnRecommended"
+            android:layout_width="wrap_content"
+            android:drawableLeft="@drawable/icon_recommended"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/colorPrimary"
+            android:paddingLeft="8dp"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Recommended"
+            />
+
+        <Button
+            android:id="@+id/btnMostPopular"
+            android:layout_width="wrap_content"
+            android:drawableLeft="@drawable/icon_popular"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/colorPrimary"
+            android:paddingLeft="8dp"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Most Popular"
+            />
+
+        <Button
+            android:id="@+id/btnDeliveryTime"
+            android:layout_width="wrap_content"
+            android:drawableLeft="@drawable/icon_deliverytime"
+            android:drawablePadding="8dp"
+            android:paddingLeft="8dp"
+            android:drawableTint="@color/colorPrimary"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Delivery Time"
+            />
+
+
+        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/llPrice">
+
+
+
+        <TextView
+            android:id="@+id/btnOne"
+            android:layout_width="50dp"
+            android:layout_margin="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_gravity="center"
+            android:layout_height="50dp"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:background="@drawable/rounded_shape2"
+            android:text="\u20b9"
+            />
+
+
+        <TextView
+            android:id="@+id/btnTen"
+            android:layout_width="50dp"
+            android:layout_margin="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_gravity="center"
+            android:layout_height="50dp"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:background="@drawable/rounded_shape2"
+            android:text="\u20b9\u20b9"
+            />
+
+        <TextView
+            android:id="@+id/btnHundred"
+            android:layout_width="50dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_gravity="center"
+            android:layout_height="50dp"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_shape2"
+            android:text="\u20b9\u20b9\u20b9"
+            />
+
+        <TextView
+            android:id="@+id/btnThousand"
+            android:layout_width="50dp"
+            android:layout_margin="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_gravity="center"
+            android:layout_height="50dp"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:background="@drawable/rounded_shape2"
+            android:text="\u20b9\u20b9\u20b9\u20b9"
+            />
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/llDietary">
+
+        <Button
+            android:id="@+id/btnVeg"
+            android:layout_width="wrap_content"
+            android:drawableLeft="@drawable/icon_vegetarian"
+            android:drawablePadding="8dp"
+            android:paddingLeft="8dp"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Veg"
+            />
+
+        <Button
+            android:id="@+id/btnNonVeg"
+            android:layout_width="wrap_content"
+            android:drawableLeft="@drawable/icon_non_veg"
+            android:drawablePadding="8dp"
+            android:paddingLeft="8dp"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Non-Veg"
+            />
+
+        <Button
+            android:id="@+id/btnJain"
+            android:layout_width="wrap_content"
+            android:drawableLeft="@drawable/icon_jain"
+            android:drawablePadding="8dp"
+            android:paddingLeft="8dp"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="Jain"
+            />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+
+        android:background="@color/colorPrimary"/>
+
+
+    <Button
+        android:id="@+id/btnDone"
+
+        android:layout_width="fill_parent"
+        android:paddingLeft="8dp"
+        android:textAllCaps="true"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:text="Done"
+        />
+
+</LinearLayout>

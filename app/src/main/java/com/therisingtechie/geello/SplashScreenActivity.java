@@ -37,6 +37,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                // i = new Intent(context, LoginActivity.class);
                 startActivity(i);
                 finish();
+                overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 
                 // close this activity
                 finish();
