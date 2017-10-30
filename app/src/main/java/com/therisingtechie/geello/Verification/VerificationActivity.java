@@ -22,6 +22,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.therisingtechie.geello.DashBoardActivity;
 
+import com.therisingtechie.geello.NewDashboardActivity;
 import com.therisingtechie.geello.R;
 import com.therisingtechie.geello.helper.CommonMethods;
 import com.therisingtechie.geello.helper.NetConnectivity;
@@ -428,7 +429,7 @@ public class VerificationActivity extends AppCompatActivity implements  Verifica
 
 
 
-        Intent intent = new Intent(context, DashBoardActivity.class);
+        Intent intent = new Intent(context, NewDashboardActivity.class);
         startActivity(intent);
         finish();
 

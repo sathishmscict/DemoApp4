@@ -10,11 +10,15 @@ import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.util.Log;
 
+import com.androidnetworking.AndroidNetworking;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.BuildConfig;
 import com.facebook.FacebookSdk;
 import com.facebook.LoggingBehavior;
 import com.firebase.client.Firebase;
+import com.therisingtechie.geello.injection.component.ApplicationComponent;
+import com.therisingtechie.geello.injection.module.ApplicationModule;
+import com.therisingtechie.geello.injection.component.DaggerApplicationComponent;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,9 +32,12 @@ import io.realm.RealmConfiguration;
  */
 
 public class MyApplication  extends Application {
+    private MyApplication applicationComponent;
 
     public static final String TAG = MyApplication.class
             .getSimpleName();
+
+    ApplicationComponent mApplicationComponent;
 
 
 
@@ -72,6 +79,13 @@ public class MyApplication  extends Application {
         super.onCreate();
         mInstance = this;
 
+
+
+        AndroidNetworking.initialize(getApplicationContext());
+        mApplicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this))
+                .build();
+        mApplicationComponent.inject(this);
 
         context = getApplicationContext();
         FacebookSdk.sdkInitialize(this);
@@ -117,4 +131,13 @@ public class MyApplication  extends Application {
 
 
     }
+
+    public MyApplication getApplicationComponent() {
+        return this.applicationComponent;
+    }
+
+
+
+
+
 }

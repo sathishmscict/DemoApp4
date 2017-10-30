@@ -1,1 +1,1 @@
-include ':app', ':bottom-bar', ':fabulousfilter'
+include ':app', ':bottom-bar', ':fabulousfilter', ':sweetsheet'

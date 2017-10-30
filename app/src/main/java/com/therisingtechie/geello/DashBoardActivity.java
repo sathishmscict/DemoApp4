@@ -815,7 +815,8 @@ hideSoftKeyboard();
         return super.onOptionsItemSelected(item);
     }
 
-    public void showPopup(View v) {
+    public void showPopup(View v)
+    {
 
 
         LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);

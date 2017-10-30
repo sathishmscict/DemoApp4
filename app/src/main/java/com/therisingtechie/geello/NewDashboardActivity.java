@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -13,34 +15,52 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewDebug;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.therisingtechie.geello.adapter.RestaurantsAdapterRecyclerView;
+import com.therisingtechie.geello.api.ApiClient;
+import com.therisingtechie.geello.api.ApiInterface;
 import com.therisingtechie.geello.fragments.FragmentHome;
 import com.therisingtechie.geello.fragments.FragmentOrders;
 import com.therisingtechie.geello.fragments.FragmentProfile;
 import com.therisingtechie.geello.fragments.FragmentSearch;
+import com.therisingtechie.geello.helper.CommonMethods;
 import com.therisingtechie.geello.helper.GPSTracker;
 import com.therisingtechie.geello.helper.NetConnectivity;
+import com.therisingtechie.geello.model.RestaurantsDataResponse;
+import com.therisingtechie.geello.request.RestaurantDataRequest;
 import com.therisingtechie.geello.session.SessionManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -48,6 +68,9 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NewDashboardActivity extends AppCompatActivity {
 
@@ -75,6 +98,28 @@ public class NewDashboardActivity extends AppCompatActivity {
     @BindView(R.id.viewProfile)
     View viewProfile;
 
+
+
+    @BindView(R.id.llCustomMenu)
+    LinearLayout llCustomMenu;
+
+
+
+    @BindView(R.id.rvRestaurants)
+    RecyclerView rvRestaurants;
+
+    @BindView(R.id.rvPopularRestaurants)
+    RecyclerView rvPopularRestaurants;
+
+    @BindView(R.id.tvSortRestaurants)
+    TextView tvSortRestaurants;
+
+    @BindView(R.id.llHomeContainer)
+    LinearLayout  llHomeContainer;
+
+    @BindView(R.id.container_body)
+    FrameLayout container_body;
+
     private String TAB_HOME = "Geello";
     private String TAB_SEARCH = "Search Category";
 
@@ -83,11 +128,21 @@ public class NewDashboardActivity extends AppCompatActivity {
     private Context context = this;
     private SessionManager sessionManager;
     private HashMap<String, String> userDetails = new HashMap<String, String>();
-    private SpotsDialog spotsDialog;
+
     private String TAG = NewDashboardActivity.class.getSimpleName();
     private TextView tvTitle;
     private Geocoder geocoder;
     private String TITLE;
+
+    int OFFSET_VALUE = 50;
+    private int RESTAURANT_PAGE_COUNTER = 1;
+    private SpotsDialog spotsDialog;
+    private RestaurantsAdapterRecyclerView adapter;
+    private RestaurantsAdapterRecyclerView adapter_popular;
+    private List<RestaurantsDataResponse.Datum> list_PopularRestaurants = new ArrayList<RestaurantsDataResponse.Datum>();
+
+    private List<RestaurantsDataResponse.Datum> list_AllRestaurants = new ArrayList<RestaurantsDataResponse.Datum>();;
+
 
 
     @Override
@@ -122,17 +177,34 @@ public class NewDashboardActivity extends AppCompatActivity {
         userDetails = sessionManager.getSessionDetails();
 
 
+        LinearLayoutManager layoutManager_popular_categories = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        rvPopularRestaurants.setLayoutManager(layoutManager_popular_categories);
+
+
+        LinearLayoutManager layoutManager_main_categories = new LinearLayoutManager(context);
+        rvRestaurants.setLayoutManager(layoutManager_main_categories);
+
+
+
         geocoder = new Geocoder(this, Locale.getDefault());
 
+
+        tvSortRestaurants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopup(llCustomMenu) ;
+            }
+        });
 
         llHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 setCustomLayout(TAB_HOME);
+                FillHomeData();
             }
         });
-        llHome.performClick();
+       // llHome.performClick();
         llOrders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,6 +242,204 @@ public class NewDashboardActivity extends AppCompatActivity {
 
         }
 
+
+
+
+        rvPopularRestaurants.addOnItemTouchListener(new CommonMethods.RecyclerTouchListener(context, rvPopularRestaurants, new CommonMethods.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+				/*SetCategoryDetails("category", listMainCategories.get(position).getCategoryId(), listMainCategories.get(position).getCategoryName());
+
+				Intent intent = new Intent(context, SubCategories.class);
+				startActivity(intent);
+				finish();*/
+                Toast.makeText(context, "Title", Toast.LENGTH_SHORT).show();
+
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+
+        rvRestaurants.addOnItemTouchListener(new CommonMethods.RecyclerTouchListener(context, rvRestaurants, new CommonMethods.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+				/*SetCategoryDetails("category", listMainCategories.get(position).getCategoryId(), listMainCategories.get(position).getCategoryName());
+
+				Intent intent = new Intent(context, SubCategories.class);
+				startActivity(intent);
+				finish();*/
+                Toast.makeText(context, "Title", Toast.LENGTH_SHORT).show();
+
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+
+        FillHomeData();
+
+
+
+
+    }
+
+    private void FillHomeData() {
+        getPopularRestarantsDetailsFromServer();
+        getAllRestaurantDetailsFromServer();
+
+        llHomeContainer.setVisibility(View.VISIBLE);
+        container_body.setVisibility(View.GONE);
+        setupCurrentLocation();
+    }
+    //onCreate Completed
+
+
+
+    private void getAllRestaurantDetailsFromServer()
+    {
+
+
+        CommonMethods.showDialog(spotsDialog);
+
+        ApiInterface apicInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        RestaurantDataRequest restaurantDataRequest = new RestaurantDataRequest();
+        restaurantDataRequest.start = RESTAURANT_PAGE_COUNTER;
+
+        restaurantDataRequest.count = OFFSET_VALUE;
+        restaurantDataRequest.search = "";
+
+
+        Log.d(TAG, "URL api/restros/getRestros : " + CommonMethods.WEBSITE + "api/restros/getRestros?token="+ userDetails.get(SessionManager.KEY_TOKEN) +"body=" + restaurantDataRequest.toString());
+
+        apicInterface.getAllRestaurantDetailsFromServer(userDetails.get(SessionManager.KEY_TOKEN), restaurantDataRequest).enqueue(new Callback<RestaurantsDataResponse>() {
+
+
+            @Override
+            public void onResponse(Call<RestaurantsDataResponse> call, Response<RestaurantsDataResponse> response) {
+
+                Log.d(TAG, "GetAllRestaurantsData Response Code : " + response.code());
+
+                if (response.code() == 200) {
+
+                    String str_error = response.body().getMessage();
+                    boolean error_status = response.body().getFlag();
+
+
+                    if (error_status == true) {
+
+
+
+                        list_AllRestaurants= response.body().getData();
+
+
+                        try {
+                            adapter = new RestaurantsAdapterRecyclerView(context, list_AllRestaurants,"nprmal");
+                            rvRestaurants.setAdapter(adapter);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                        CommonMethods.hideDialog(spotsDialog);
+
+
+                    }
+                } else {
+                    CommonMethods.showErrorMessageWhenStatusNot200(context, response.code());
+                }
+                CommonMethods.hideDialog(spotsDialog);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<RestaurantsDataResponse> call, Throwable t) {
+
+                CommonMethods.onFailure(context, TAG, t);
+                CommonMethods.hideDialog(spotsDialog);
+
+            }
+        });
+    }
+
+    private void getPopularRestarantsDetailsFromServer()
+    {
+
+        CommonMethods.showDialog(spotsDialog);
+        ApiInterface apicInterface = ApiClient.getClient().create(ApiInterface.class);
+
+        RestaurantDataRequest restaurantDataRequest = new RestaurantDataRequest();
+        restaurantDataRequest.start = RESTAURANT_PAGE_COUNTER;
+
+        restaurantDataRequest.count = OFFSET_VALUE;
+        restaurantDataRequest.search = "";
+
+
+        Log.d(TAG, "URL api/restros/getPopularRestros : " + CommonMethods.WEBSITE + "api/restros/getPopularRestros?token="+ userDetails.get(SessionManager.KEY_TOKEN) +"&body=" + restaurantDataRequest.toString());
+
+        apicInterface.getPopularRestaurantDetailsFromServer(userDetails.get(SessionManager.KEY_TOKEN), restaurantDataRequest).enqueue(new Callback<RestaurantsDataResponse>() {
+
+
+            @Override
+            public void onResponse(Call<RestaurantsDataResponse> call, Response<RestaurantsDataResponse> response) {
+
+                Log.d(TAG, "GetPopularRestaurantsData Response Code : " + response.code());
+
+                if (response.code() == 200) {
+
+                    String str_error = response.body().getMessage();
+                    boolean error_status = response.body().getFlag();
+
+
+                    if (error_status == true) {
+
+
+                        List<RestaurantsDataResponse.Datum> sads = response.body().getData();
+
+                        list_PopularRestaurants = response.body().getData();
+
+
+                        try {
+                            adapter_popular = new RestaurantsAdapterRecyclerView(context, list_PopularRestaurants,"popular");
+                            rvPopularRestaurants.setAdapter(adapter_popular);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                        CommonMethods.hideDialog(spotsDialog);
+
+
+                    }
+                } else {
+                    CommonMethods.showErrorMessageWhenStatusNot200(context, response.code());
+                }
+                CommonMethods.hideDialog(spotsDialog);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<RestaurantsDataResponse> call, Throwable t) {
+
+                CommonMethods.onFailure(context, TAG, t);
+                CommonMethods.hideDialog(spotsDialog);
+
+            }
+        });
 
     }
 
@@ -215,6 +485,7 @@ public class NewDashboardActivity extends AppCompatActivity {
                                         String knownName = addresses.get(0).getFeatureName();
 
                                         tvTitle.setText(addresses.get(0).getSubLocality());
+                                        tvTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_location, 0);
 
                                     } catch (IOException e) {
                                         tvTitle.setText("");
@@ -322,6 +593,7 @@ public class NewDashboardActivity extends AppCompatActivity {
             viewOrders.setBackgroundColor(getResources().getColor(R.color.white));
             viewSearch.setBackgroundColor(getResources().getColor(R.color.white));
             viewProfile.setBackgroundColor(getResources().getColor(R.color.white));
+           // setupFragment(fragment, TITLE);
 
         } else if (type.equals(TAB_SEARCH)) {
             TITLE = TAB_SEARCH;
@@ -330,6 +602,7 @@ public class NewDashboardActivity extends AppCompatActivity {
             viewOrders.setBackgroundColor(getResources().getColor(R.color.white));
             viewSearch.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             viewProfile.setBackgroundColor(getResources().getColor(R.color.white));
+            setupFragment(fragment, TITLE);
 
         } else if (type.equals(TAB_ORDERS)) {
             TITLE = TAB_ORDERS;
@@ -338,6 +611,7 @@ public class NewDashboardActivity extends AppCompatActivity {
             viewOrders.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             viewSearch.setBackgroundColor(getResources().getColor(R.color.white));
             viewProfile.setBackgroundColor(getResources().getColor(R.color.white));
+            setupFragment(fragment, TITLE);
 
         } else if (type.equals(TAB_PROFILE)) {
             TITLE = TAB_PROFILE;
@@ -347,9 +621,9 @@ public class NewDashboardActivity extends AppCompatActivity {
             viewSearch.setBackgroundColor(getResources().getColor(R.color.white));
             viewProfile.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
+        setupFragment(fragment, TITLE);
         }
 
-        setupFragment(fragment, TITLE);
     }
 
     public void hideSoftKeyboard() {
@@ -369,6 +643,11 @@ public class NewDashboardActivity extends AppCompatActivity {
     }
 
     private void setupFragment(Fragment fragment, String title) {
+
+
+        llHomeContainer.setVisibility(View.GONE);
+        container_body.setVisibility(View.VISIBLE);
+
 
         if (title.toString().toLowerCase().equals("geello")) {
 
@@ -430,5 +709,160 @@ public class NewDashboardActivity extends AppCompatActivity {
         }
 
     }
+
+
+    public void showPopup(View v)
+    {
+
+
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View popupView = layoutInflater.inflate(R.layout.layout_custom_filter, null);
+
+        final PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.FILL_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                //TODO do sth here on dismiss
+            }
+        });
+
+
+        final LinearLayout llSort = (LinearLayout) popupView.findViewById(R.id.llSort);
+
+        final LinearLayout llPrice = (LinearLayout) popupView.findViewById(R.id.llPrice);
+
+        final LinearLayout llDietary = (LinearLayout) popupView.findViewById(R.id.llDietary);
+        llPrice.setVisibility(View.GONE);
+        llDietary.setVisibility(View.GONE);
+
+
+        final Button btnDone = (Button) popupView.findViewById(R.id.btnDone);
+
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+            }
+        });
+
+        final Button btnSort = (Button) popupView.findViewById(R.id.btnSort);
+        final Button btnPrice = (Button) popupView.findViewById(R.id.btnPrice);
+        final Button btnDietary = (Button) popupView.findViewById(R.id.btnDietary);
+
+        Button btnRecommended = (Button) popupView.findViewById(R.id.btnRecommended);
+        Button btnMostPopular = (Button) popupView.findViewById(R.id.btnMostPopular);
+        final Button btnDeliveryTime = (Button) popupView.findViewById(R.id.btnDeliveryTime);
+
+
+        btnSort.setTextColor(getResources().getColor(R.color.colorPrimary));
+        btnPrice.setTextColor(getResources().getColor(R.color.text_color));
+        btnDietary.setTextColor(getResources().getColor(R.color.text_color));
+
+        btnSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llDietary.setVisibility(View.GONE);
+                llPrice.setVisibility(View.GONE);
+                llSort.setVisibility(View.VISIBLE);
+
+
+                try {
+                    //LinearLayout llmain = (LinearLayout) dialog.findViewById(R.id.llSort);
+                    llSort.setVisibility(LinearLayout.VISIBLE);
+                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_in);
+                    animation.setDuration(500);
+                    llSort.setAnimation(animation);
+                    llSort.animate();
+                    animation.start();
+                } catch (Resources.NotFoundException e) {
+                    e.printStackTrace();
+                }
+
+                //  btnSort.setTypeface(btnSort.getTypeface(), Typeface.BOLD);
+                // btnPrice.setTypeface(btnPrice.getTypeface(), Typeface.NORMAL);
+                //btnDietary.setTypeface(btnDietary.getTypeface(), Typeface.NORMAL);
+
+                btnSort.setTextColor(getResources().getColor(R.color.colorPrimary));
+                btnPrice.setTextColor(getResources().getColor(R.color.text_color));
+                btnDietary.setTextColor(getResources().getColor(R.color.text_color));
+
+
+            }
+        });
+
+
+        btnPrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llDietary.setVisibility(View.GONE);
+                llPrice.setVisibility(View.VISIBLE);
+                llSort.setVisibility(View.GONE);
+
+                try {
+                    //LinearLayout llmain = (LinearLayout) dialog.findViewById(R.id.llSort);
+                    llPrice.setVisibility(LinearLayout.VISIBLE);
+                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_in);
+                    animation.setDuration(500);
+                    llPrice.setAnimation(animation);
+                    llPrice.animate();
+                    animation.start();
+                } catch (Resources.NotFoundException e) {
+                    e.printStackTrace();
+                }
+
+
+                // btnSort.setTypeface(btnSort.getTypeface(), Typeface.NORMAL);
+                //btnPrice.setTypeface(btnPrice.getTypeface(), Typeface.BOLD);
+                //btnDietary.setTypeface(btnDietary.getTypeface(), Typeface.NORMAL);
+
+                btnSort.setTextColor(getResources().getColor(R.color.text_color));
+                btnPrice.setTextColor(getResources().getColor(R.color.colorPrimary));
+                btnDietary.setTextColor(getResources().getColor(R.color.text_color));
+
+            }
+        });
+
+        btnDietary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llDietary.setVisibility(View.VISIBLE);
+                llPrice.setVisibility(View.GONE);
+                llSort.setVisibility(View.GONE);
+
+                try {
+                    //LinearLayout llmain = (LinearLayout) dialog.findViewById(R.id.llSort);
+                    llDietary.setVisibility(LinearLayout.VISIBLE);
+                    Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_in);
+                    animation.setDuration(500);
+                    llDietary.setAnimation(animation);
+                    llDietary.animate();
+                    animation.start();
+                } catch (Resources.NotFoundException e) {
+                    e.printStackTrace();
+
+                }
+
+
+                // btnSort.setTypeface(btnSort.getTypeface(), Typeface.NORMAL);
+                //btnPrice.setTypeface(btnPrice.getTypeface(), Typeface.NORMAL);
+                //btnDietary.setTypeface(btnDietary.getTypeface(), Typeface.BOLD);
+                btnSort.setTextColor(getResources().getColor(R.color.text_color));
+                btnPrice.setTextColor(getResources().getColor(R.color.text_color));
+                btnDietary.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
+            }
+        });
+
+
+        popupWindow.showAsDropDown(v);
+    }
+    /*Filter Realted Code*/
 
 }
