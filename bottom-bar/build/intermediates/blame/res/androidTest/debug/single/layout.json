@@ -4,12 +4,12 @@
         "source": "C:\\Users\\chiranjeevi mateti\\.android\\build-cache\\6d8d98a6a9aa9fb75605b93d9faf42b83f6d793c\\output\\res\\layout\\notification_action.xml"
     },
     {
-        "merged": "E:\\Android Workspace\\Live Projects\\GEELLO\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_action_bar_up_container.xml",
-        "source": "C:\\Users\\chiranjeevi mateti\\.android\\build-cache\\6d8d98a6a9aa9fb75605b93d9faf42b83f6d793c\\output\\res\\layout\\abc_action_bar_up_container.xml"
-    },
-    {
         "merged": "E:\\Android Workspace\\Live Projects\\GEELLO\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_list_menu_item_icon.xml",
         "source": "C:\\Users\\chiranjeevi mateti\\.android\\build-cache\\6d8d98a6a9aa9fb75605b93d9faf42b83f6d793c\\output\\res\\layout\\abc_list_menu_item_icon.xml"
+    },
+    {
+        "merged": "E:\\Android Workspace\\Live Projects\\GEELLO\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_action_bar_up_container.xml",
+        "source": "C:\\Users\\chiranjeevi mateti\\.android\\build-cache\\6d8d98a6a9aa9fb75605b93d9faf42b83f6d793c\\output\\res\\layout\\abc_action_bar_up_container.xml"
     },
     {
         "merged": "E:\\Android Workspace\\Live Projects\\GEELLO\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_template_media_custom.xml",
@@ -24,12 +24,12 @@
         "source": "C:\\Users\\chiranjeevi mateti\\.android\\build-cache\\6df4556ee7d66ba9b48cb642556582c05eb109a7\\output\\res\\layout\\design_menu_item_action_area.xml"
     },
     {
-        "merged": "E:\\Android Workspace\\Live Projects\\GEELLO\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_screen_simple.xml",
-        "source": "C:\\Users\\chiranjeevi mateti\\.android\\build-cache\\6d8d98a6a9aa9fb75605b93d9faf42b83f6d793c\\output\\res\\layout\\abc_screen_simple.xml"
-    },
-    {
         "merged": "E:\\Android Workspace\\Live Projects\\GEELLO\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_action_mode_close_item_material.xml",
         "source": "C:\\Users\\chiranjeevi mateti\\.android\\build-cache\\6d8d98a6a9aa9fb75605b93d9faf42b83f6d793c\\output\\res\\layout\\abc_action_mode_close_item_material.xml"
+    },
+    {
+        "merged": "E:\\Android Workspace\\Live Projects\\GEELLO\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_screen_simple.xml",
+        "source": "C:\\Users\\chiranjeevi mateti\\.android\\build-cache\\6d8d98a6a9aa9fb75605b93d9faf42b83f6d793c\\output\\res\\layout\\abc_screen_simple.xml"
     },
     {
         "merged": "E:\\Android Workspace\\Live Projects\\GEELLO\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\abc_action_bar_title_item.xml",
